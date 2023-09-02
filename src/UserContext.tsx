@@ -38,7 +38,7 @@ useEffect(() => {
   if (imagePairs.length > 0) return;
 
   // Fetch images from the backend
-  fetch(process.env.BACKEND_URL + '/api/images')
+  fetch(import.meta.env.VITE_BACKEND_URL + '/api/images')
     .then(response => response.json())
     .then(data => {
         setImagePairs(data);
@@ -56,7 +56,7 @@ useEffect(() => {
       userInfo: userInfo,
       choices: choices
     }))
-    fetch(process.env.BACKEND_URL+'/api/report', {
+    fetch(import.meta.env.VITE_BACKEND_URL+'/api/report', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
