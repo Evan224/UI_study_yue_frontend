@@ -38,7 +38,7 @@ useEffect(() => {
   if (imagePairs.length > 0) return;
 
   // Fetch images from the backend
-  fetch('http://localhost:3000/images')
+  fetch(process.env.BACKEND_URL + '/api/images')
     .then(response => response.json())
     .then(data => {
         setImagePairs(data);
@@ -56,7 +56,7 @@ useEffect(() => {
       userInfo: userInfo,
       choices: choices
     }))
-    fetch('http://localhost:3000/report', {
+    fetch(process.env.BACKEND_URL+'/api/report', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
