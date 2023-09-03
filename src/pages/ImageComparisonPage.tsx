@@ -1,18 +1,13 @@
 // src/pages/ImageComparisonPage.tsx
-
 import React, { useState } from 'react';
-import { Button } from 'antd';
+import { Button, Image, Progress, Tooltip } from 'antd';
 
 import { useUser } from '../UserContext'; 
 
-// const imagePairs = [
-//   { id: 1, left: 'https://picsum.photos/200/300?random=1', right: 'https://picsum.photos/200/300?random=2',name:'image1',grid:'left' },
-//   { id: 2, left: 'https://picsum.photos/200/300?random=3', right: 'https://picsum.photos/200/300?random=4',name:'image2',grid:'right' },
-// ];
 
 const ImageComparisonPage: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { setChoices,imagePairs,submitTheAnswer } = useUser(); // <-- Use the hook
+  const { setChoices,imagePairs,submitTheAnswer,choices } = useUser(); // <-- Use the hook
 
   const handleChoice = (choiceIndex: number) => {
     const choiceName = choiceIndex === 0 ? 'left' : 'right';
@@ -72,17 +67,23 @@ const ImageComparisonPage: React.FC = () => {
     <div className="flex flex-col items-center justify-center h-screen">
       <h1>Choose Your Preferred Image</h1>
       <div className="flex space-x-4">
-        <img
+        <Image
           src={currentPair.left}
           alt={`Image ${currentIndex + 1}A`}
-          className="cursor-pointer w-72 h-72 object-cover" // <-- Tailwind classes here
+          className="cursor-pointer border-2 border-blue-500 shadow-lg" // Added border and shadow
+          width={144}
+          height={288}
           onClick={() => handleChoice(0)}
+          preview={false}
         />
-        <img
+        <Image
           src={currentPair.right}
           alt={`Image ${currentIndex + 1}B`}
-          className="cursor-pointer w-72 h-72 object-cover" // <-- Tailwind classes here
+          className="cursor-pointer border-2 border-blue-500 shadow-lg" // Added border and shadow
+          width={144}
+          height={288}
           onClick={() => handleChoice(1)}
+          preview={false}
         />
       </div>
       <div className="flex space-x-4 mt-4">
@@ -91,8 +92,33 @@ const ImageComparisonPage: React.FC = () => {
         </Button>
         <Button onClick={() => handleChoice(-1)}>Skip</Button>
       </div>
+      <Progress
+        className="mt-4"
+        percent={(currentIndex / imagePairs.length) * 100}
+        showInfo={false}
+      />
+      <div className="flex mt-4 flex-wrap">
+        {imagePairs.map((_, index) => (
+          <Tooltip title={`Image Pair ${index + 1}`} key={index}>
+            <div
+              className={`w-4 h-4 m-1 cursor-pointer text-xs flex items-center justify-center ${
+                choices.some(choice => choice.name === _.name)
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-300'
+              }`}
+              onClick={() => setCurrentIndex(index)}
+            >
+              {index + 1}
+            </div>
+          </Tooltip>
+        ))}
+      </div>
+      <Button className="mt-4" onClick={submitTheAnswer}>
+        Submit Current Results
+      </Button>
     </div>
-);
+  );
 };
+
 
 export default ImageComparisonPage;
