@@ -1,6 +1,7 @@
 // src/context/UserContext.tsx
 
 import React, { createContext, useContext, useState,useEffect} from 'react';
+import { notification } from 'antd';
 
 interface UserState {
   userInfo: {
@@ -50,28 +51,39 @@ useEffect(() => {
 
 
 
-  const submitTheAnswer = () => {
-    // Send data to the backend
-    console.log(JSON.stringify({
+const submitTheAnswer = () => {
+  // Send data to the backend
+  console.log(JSON.stringify({
+    userInfo: userInfo,
+    choices: choices
+  }))
+  fetch(import.meta.env.VITE_BACKEND_URL+'/api/report', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
       userInfo: userInfo,
       choices: choices
-    }))
-    fetch(import.meta.env.VITE_BACKEND_URL+'/api/report', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        userInfo: userInfo,
-        choices: choices
-      })
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Submission response:', data);
-    })
-    .catch(error => console.error('Error submitting data:', error));
-  };
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Submission response:', data);
+    notification.success({
+      message: 'Submission Successful',
+      description: 'Your answers have been successfully submitted.',
+    });
+  })
+  .catch(error => {
+    console.error('Error submitting data:', error);
+    notification.error({
+      message: 'Submission Failed',
+      description: 'There was an error submitting your answers. Please try again.',
+    });
+  });
+};
+
   
   useEffect(() => {
     localStorage.setItem('userInfo', JSON.stringify(userInfo));
