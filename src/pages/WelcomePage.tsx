@@ -13,7 +13,7 @@ const WelcomePage: React.FC = () => {
       <Paragraph>
         This platform is designed to gather user preferences on image pairs. Your feedback is invaluable to us.
       </Paragraph>
-      <Link to="/basic-info">
+      <Link to="/tutorial">
       <Button type="primary" size="large">
         Start Study
       </Button>

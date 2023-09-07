@@ -129,7 +129,7 @@ const ImageComparisonPage: React.FC = () => {
           Previous
         </Button>
         <Button onClick={() => setCurrentIndex((prevIndex) => prevIndex + 1)}>Skip</Button>
-        <Button onClick={handleSimilarChoice}>They look similar</Button> 
+        <Button onClick={handleSimilarChoice}>They are equally good</Button> 
       </div>
       <Progress
         className="mt-4"
